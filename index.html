@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>다시이음 AI · 근거 기반 AI 커리어 전환 플랫폼</title>
+  <meta name="description" content="육아·돌봄·가사 등 공식 경력증명서가 없는 생활 경험을 AI 정밀 인터뷰와 Fact-Lock 근거 검증 기술로 직무 역량 및 이력서로 전환하는 플랫폼">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="bg-glow-1"></div>
+  <div class="bg-glow-2"></div>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <a href="#" class="logo-group" onclick="goToStep(1)">
+        <span class="logo-badge">다시이음 AI</span>
+        <div>
+          <div class="logo-title">경력번역소</div>
+          <div class="logo-subtitle">FACT-LOCK CAREER TRANSLATOR</div>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <button id="demoModeBtn" class="btn-demo-mode">
+          <span>✨ 30초 공모전 시연 모드</span>
+        </button>
+        <button id="themeToggleBtn" class="theme-toggle-btn" title="다크/라이트 테마 전환">
+          <!-- Icon injected by JS -->
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Stepper Navigation -->
+  <nav class="stepper-nav">
+    <div class="stepper-container">
+      <div class="step-item active" data-step="1">
+        <span class="step-number">1</span>
+        <span>시작·신뢰</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step-item" data-step="2">
+        <span class="step-number">2</span>
+        <span>목표 설정</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step-item" data-step="3">
+        <span class="step-number">3</span>
+        <span>경험 수집</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step-item" data-step="4">
+        <span class="step-number">4</span>
+        <span>AI 인터뷰</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step-item" data-step="5">
+        <span class="step-number">5</span>
+        <span>Fact-Lock 검토</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step-item" data-step="6">
+        <span class="step-number">6</span>
+        <span>역량 대시보드</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step-item" data-step="7">
+        <span class="step-number">7</span>
+        <span>채용 연결</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step-item" data-step="8">
+        <span class="step-number">8</span>
+        <span>7일 액션플랜</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main View Container -->
+  <main class="main-wrapper">
+
+    <!-- SCREEN 1: 시작·신뢰 화면 -->
+    <section class="screen-view active" data-screen="1">
+      <div class="hero-section">
+        <div class="badge-tag">
+          <span>🔒 근거 기반 FACT-LOCK AI 기술 탑재</span>
+        </div>
+        <h1 class="hero-title">
+          쉬었던 시간이 아니라,<br>
+          <span>해냈던 일</span>을 보여주세요.
+        </h1>
+        <p class="hero-desc">
+          육아, 돌봄, 가사, 봉사활동 등 공식 경력증명서가 없던 당신의 소중한 생활 경험을<br>
+          AI 정밀 인터뷰와 근거 잠금(Fact-Lock) 기술로 기업이 탐내는 직무 언어로 바꿔드립니다.
+        </p>
+
+        <div class="trust-banner">
+          <div class="trust-item">
+            <span>🛡️ AI 환각(거짓 정보) 0%</span>
+          </div>
+          <div class="trust-item">
+            <span>🔐 원문 근거 1:1 보장</span>
+          </div>
+          <div class="trust-item">
+            <span>⏱️ 10분 내 이력서 완성</span>
+          </div>
+        </div>
+
+        <div class="action-btn-group">
+          <button class="btn-primary" onclick="goToStep(2)">
+            내 경험 직무 역량으로 번역하기 ➔
+          </button>
+          <button class="btn-secondary" onclick="document.getElementById('demoModeBtn').click()">
+            ⚡ 30초 시연 데이터 로드
+          </button>
+        </div>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3 class="feature-title">AI 정밀 인터뷰</h3>
+          <p class="feature-desc">부담스러운 서술형 작성 대신, 편안한 대화형 질문에 답변하기만 하면 핵심 상황·역할·성과가 정리됩니다.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔗</div>
+          <h3 class="feature-title">Fact-Lock 검증</h3>
+          <p class="feature-desc">생성된 모든 이력서 문장은 사용자가 입력한 원문 근거와 1:1로 매핑되어 과장이나 거짓 생성을 완벽히 차단합니다.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3 class="feature-title">TOP 5 역량 카드 & STAR 면접</h3>
+          <p class="feature-desc">나만의 핵심 역량 도미노 카드와 면접관의 압박 질문에도 당당히 답할 수 있는 STAR 기법 답변을 즉시 제공합니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 2: 목표 설정 -->
+    <section class="screen-view" data-screen="2">
+      <div class="glass-card">
+        <div class="section-header">
+          <h2 class="section-title">Step 2. 구직 목표 및 희망 조건 설정</h2>
+          <p class="section-desc">어떤 직무와 지역에서 다시 일하고 싶으신가요? 적합한 직무 언어로 번역해 드립니다.</p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">1. 희망 직무 분야 선택</label>
+          <div class="grid-selector">
+            <div class="select-card job-select-card selected">
+              <div class="select-card-icon">💼</div>
+              <div class="select-card-title">사무 지원 & 행정</div>
+              <div class="select-card-sub">문서 작성, 데이터 입력, 총무</div>
+            </div>
+            <div class="select-card job-select-card">
+              <div class="select-card-icon">🎧</div>
+              <div class="select-card-title">고객 응대 & CS</div>
+              <div class="select-card-sub">인바운드, 상담, 안내</div>
+            </div>
+            <div class="select-card job-select-card">
+              <div class="select-card-icon">🧸</div>
+              <div class="select-card-title">돌봄 & 교육 서비스</div>
+              <div class="select-card-sub">아동/노인 케어, 매니저</div>
+            </div>
+            <div class="select-card job-select-card">
+              <div class="select-card-icon">🏪</div>
+              <div class="select-card-title">매장 관리 & 기획</div>
+              <div class="select-card-sub">재고 관리, 판매, 이벤트</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">2. 희망 지역 (전북·광주/전남 시범 지역 우대)</label>
+          <div class="grid-selector">
+            <div class="select-card region-select-card selected">
+              <div class="select-card-icon">📍</div>
+              <div class="select-card-title">전주 / 완주</div>
+              <div class="select-card-sub">우선 큐레이션 제공</div>
+            </div>
+            <div class="select-card region-select-card">
+              <div class="select-card-icon">📍</div>
+              <div class="select-card-title">광주광역시</div>
+              <div class="select-card-sub">우선 큐레이션 제공</div>
+            </div>
+            <div class="select-card region-select-card">
+              <div class="select-card-icon">📍</div>
+              <div class="select-card-title">부산 / 경남</div>
+              <div class="select-card-sub">서비스/관광 직무 특화</div>
+            </div>
+            <div class="select-card region-select-card">
+              <div class="select-card-icon">📍</div>
+              <div class="select-card-title">서울 / 수도권</div>
+              <div class="select-card-sub">HR 제휴 기관 연계</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: right; margin-top: 2rem;">
+          <button class="btn-primary" onclick="goToStep(3)">경험 수집 단계로 이동 ➔</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: 경험 수집 -->
+    <section class="screen-view" data-screen="3">
+      <div class="glass-card">
+        <div class="section-header">
+          <h2 class="section-title">Step 3. 소중한 생활 경험 수집</h2>
+          <p class="section-desc">공식 경력서엔 적지 못했던 당신의 일상을 들려주세요. 여러 개를 선택하셔도 좋습니다.</p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">1. 경험 카테고리 태그 선택</label>
+          <div class="tags-container">
+            <button class="tag-btn active">👶 육아 및 자녀 교육</button>
+            <button class="tag-btn active">🏡 부모님 및 가족 돌봄</button>
+            <button class="tag-btn active">🤝 학부모회/지역 바자회 봉사</button>
+            <button class="tag-btn active">🧾 가족 가게/자영업 보조</button>
+            <button class="tag-btn">🧹 가사 및 살림 관리</button>
+            <button class="tag-btn">📚 동아리 및 온오프라인 학습</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">2. 경험 내용 입력 (음성 또는 텍스트 입력 가능)</label>
+          <textarea id="expTextarea" class="custom-textarea" placeholder="예: 8년간 학부모회 총무로 연 500만원 예산 정산과 바자회 행사를 진행했으며 300명 넘게 방문했습니다..."></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+          <button class="btn-secondary" onclick="goToStep(2)">⬅ 이전</button>
+          <button class="btn-primary" onclick="goToStep(4)">AI 정밀 인터뷰 시작 ➔</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 4: AI 정밀 인터뷰 -->
+    <section class="screen-view" data-screen="4">
+      <div class="glass-card">
+        <div class="section-header">
+          <h2 class="section-title">Step 4. AI 정밀 대화 인터뷰</h2>
+          <p class="section-desc">AI 대화 메이트가 1:1로 구체적인 역량 수치와 행동을 이끌어냅니다.</p>
+        </div>
+
+        <div id="interviewChatBox" class="interview-chat-box">
+          <!-- Injected dynamically by JS -->
+        </div>
+
+        <div class="interview-input-area">
+          <input type="text" id="chatInput" class="chat-input" placeholder="답변을 입력하시거나 마이크 버튼을 누르세요..." onkeypress="if(event.key==='Enter') document.getElementById('sendChatBtn').click()">
+          <button class="voice-btn" title="음성 입력 시뮬레이션">🎙️</button>
+          <button id="sendChatBtn" class="btn-primary">전송</button>
+        </div>
+
+        <div style="text-align: right; margin-top: 1.5rem;">
+          <button class="btn-primary" onclick="goToStep(5)">Fact-Lock 근거 검토 ➔</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 5: Fact-Lock 검토 -->
+    <section class="screen-view" data-screen="5">
+      <div class="glass-card">
+        <div class="section-header">
+          <h2 class="section-title">Step 5. Fact-Lock(근거 잠금) 검증 모듈</h2>
+          <p class="section-desc">AI가 변환한 문장은 100% 원문 근거와 연동됩니다. 문장을 탭하여 자유롭게 수정하거나 근거 상태를 확인하세요.</p>
+        </div>
+
+        <div id="factLockContainer">
+          <!-- Injected dynamically by JS -->
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+          <button class="btn-secondary" onclick="goToStep(4)">⬅ 인터뷰 수정</button>
+          <button class="btn-primary" onclick="goToStep(6)">최종 대시보드 생성 ➔</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 6: 역량 대시보드 -->
+    <section class="screen-view" data-screen="6">
+      <div class="glass-card">
+        <div class="section-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <h2 class="section-title">Step 6. 검증된 나만의 커리어 대시보드</h2>
+            <p class="section-desc">축하합니다! 생활 경험에서 발견한 대표 역량 카드와 맞춤 이력서·면접 준비가 완료되었습니다.</p>
+          </div>
+          <button class="btn-secondary" onclick="alert('PDF 및 이력서 문장이 클립보드에 복사되었습니다!')">📄 PDF / 복사하기</button>
+        </div>
+
+        <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 1rem; color: var(--accent-primary);">🏆 발견된 TOP 5 직무 역량 도미노 카드</h3>
+        <div id="competencyGrid" class="competency-grid">
+          <!-- Injected by JS -->
+        </div>
+
+        <h3 style="font-size: 1.1rem; font-weight: 800; margin: 2rem 0 1rem 0; color: var(--accent-primary);">💬 예상 면접 압박 질문 & STAR 답변 전략</h3>
+        <div id="starAnswersContainer">
+          <!-- Injected by JS -->
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+          <button class="btn-secondary" onclick="goToStep(5)">⬅ Fact-Lock 재검토</button>
+          <button class="btn-primary" onclick="goToStep(7)">맞춤 채용 공고 탐색 ➔</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 7: 채용 연결 -->
+    <section class="screen-view" data-screen="7">
+      <div class="glass-card">
+        <div class="section-header">
+          <h2 class="section-title">Step 7. AI 적합 공고 큐레이션 & 역량 매핑</h2>
+          <p class="section-desc">다시님의 검증된 역량과 90% 이상 매칭되는 추천 채용 공고입니다.</p>
+        </div>
+
+        <div id="jobMatchContainer">
+          <!-- Injected by JS -->
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+          <button class="btn-secondary" onclick="goToStep(6)">⬅ 대시보드 보기</button>
+          <button class="btn-primary" onclick="goToStep(8)">7일 실행 플랜 확인 ➔</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 8: 7일 액션플랜 -->
+    <section class="screen-view" data-screen="8">
+      <div class="glass-card">
+        <div class="section-header">
+          <h2 class="section-title">Step 8. 7일 지원 액션 플랜 (Action Plan)</h2>
+          <p class="section-desc">좋은 문장에서 멈추지 않습니다. 오늘 당장 실행할 수 있는 작은 과제부터 시작하세요!</p>
+        </div>
+
+        <div class="progress-bar-wrap">
+          <div id="actionProgressFill" class="progress-bar-fill"></div>
+        </div>
+        <div id="actionProgressText" style="font-size: 0.9rem; font-weight: 700; color: var(--accent-primary); margin-bottom: 1.5rem; text-align: right;">
+          7일 미션 달성률: 0%
+        </div>
+
+        <div id="actionPlanContainer" class="checklist-container">
+          <!-- Injected by JS -->
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;">
+          <button class="btn-primary" style="font-size: 1.15rem; padding: 1rem 2.5rem;" onclick="alert('🎉 축하합니다! 다시이음 AI와 함께 첫 지원을 성공적으로 준비하셨습니다!')">
+            🚀 오늘의 첫 지원 완료하기!
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- App Footer -->
+  <footer class="app-footer">
+    <div class="footer-links">
+      <a href="#">서비스 이용약관</a>
+      <a href="#">개인정보 처리방침</a>
+      <a href="#">Fact-Lock 기술검증서</a>
+      <a href="#">공모전/기관 제휴 문의</a>
+    </div>
+    <p>© 2026 다시이음 AI (경력번역소). All rights reserved. | 전주·광주 선도 시범 서비스</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

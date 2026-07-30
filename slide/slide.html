@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>다시이음 AI · 사업계획 및 실제 입력 데이터 발표자료</title>
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   1. 디자인 토큰 — 화사하고 희망찬 라이트 테마
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --w: 1280px;
+  --h: 720px;
+
+  --bg:        #f8fafc;
+  --bg-glow-1: rgba(99, 102, 241, 0.10);
+  --bg-glow-2: rgba(56, 189, 248, 0.12);
+
+  --fg:        #0f172a;
+  --fg-dim:    #475569;
+  --fg-faint:  #94a3b8;
+
+  --a1: #4f46e5;
+  --a2: #0284c7;
+  --a3: #ec4899;
+  --a4: #10b981;
+  --a5: #f59e0b;
+
+  --card-bg:     #ffffff;
+  --card-border: #e2e8f0;
+  --card-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.04), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
+  --radius: 16px;
+
+  --font: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕",
+          system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; background: #e2e8f0; font-family: var(--font); overflow: hidden; }
+
+#stage {
+  position: absolute; top: 50%; left: 50%;
+  width: var(--w); height: var(--h);
+  transform: translate(-50%, -50%) scale(var(--fit, 1));
+  transform-origin: center center;
+}
+
+.slide {
+  position: absolute; inset: 0;
+  display: none; flex-direction: column;
+  padding: 48px 58px;
+  background:
+    radial-gradient(1000px 700px at 10% -10%, var(--bg-glow-1), transparent 60%),
+    radial-gradient(850px 650px at 105% 108%, var(--bg-glow-2), transparent 60%),
+    var(--bg);
+  color: var(--fg); font-size: 16.5px; line-height: 1.58; overflow: hidden;
+}
+.slide.active { display: flex; }
+
+#progress {
+  position: absolute; top: 0; left: 0; height: 4px;
+  background: linear-gradient(90deg, var(--a3), var(--a1), var(--a2));
+  transition: width .25s ease; z-index: 20;
+}
+
+#nav {
+  position: absolute; right: 26px; bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+  color: var(--fg-dim); font-size: 13px; z-index: 20;
+}
+#nav button {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid var(--card-border); background: #ffffff;
+  color: var(--fg-dim); cursor: pointer; font-size: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+#nav button:hover { background: #f1f5f9; color: var(--fg); }
+
+.notes { display: none; }
+
+.slide > header { margin-bottom: 20px; flex: none; }
+.slide > header .num {
+  font-size: 12.5px; font-weight: 800; letter-spacing: .16em; color: var(--a1); margin-bottom: 4px; text-transform: uppercase;
+}
+.slide > header h2 {
+  font-size: 31px; font-weight: 800; letter-spacing: -.02em; color: #0f172a;
+  display: flex; align-items: baseline; gap: 12px;
+}
+.slide > header h2 .en { font-size: 16.5px; font-weight: 600; color: var(--fg-faint); letter-spacing: 0; }
+.slide > header .sub { margin-top: 4px; font-size: 14.5px; color: var(--fg-dim); }
+.slide > header hr {
+  margin-top: 10px; border: 0; height: 1.5px;
+  background: linear-gradient(90deg, #cbd5e1, transparent);
+}
+
+.body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+
+.grid { display: grid; gap: 14px; }
+.grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+.grid.cols-5 { grid-template-columns: repeat(5, 1fr); }
+
+.card {
+  position: relative; overflow: hidden; padding: 18px 20px;
+  background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+}
+.card[class*="accent-"]::before { content:""; position:absolute; top:0; left:0; right:0; height:3px; }
+.card.accent-1::before { background: linear-gradient(90deg, var(--a1), #818cf8); }
+.card.accent-2::before { background: linear-gradient(90deg, var(--a2), #38bdf8); }
+.card.accent-3::before { background: linear-gradient(90deg, var(--a3), #f472b6); }
+.card.accent-4::before { background: linear-gradient(90deg, var(--a4), #34d399); }
+.card.accent-5::before { background: linear-gradient(90deg, var(--a5), #fbbf24); }
+
+.card h3 { font-size: 16px; font-weight: 800; color: #0f172a; margin-bottom: 7px; display:flex; align-items:center; gap:8px; }
+.card p  { font-size: 13.5px; color: var(--fg-dim); line-height: 1.5; }
+.card ul { list-style: none; }
+.card li { font-size: 13px; color: var(--fg-dim); padding-left: 14px; position: relative; margin-top: 5px; }
+.card li::before {
+  content:""; position:absolute; left:0; top:7px; width:5px; height:5px; border-radius:50%; background: var(--a1);
+}
+.card li.check::before { content:"✓"; width:auto; height:auto; background:none; color: var(--a4); font-size:12px; top:0; font-weight:bold; }
+
+.pill {
+  display:inline-block; padding: 3px 11px; border-radius: 999px;
+  font-size: 11px; font-weight: 800; letter-spacing: .04em;
+  background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe;
+  margin-bottom: 8px;
+}
+.pill.warn { background: #fce7f3; color: #9d174d; border-color: #fbcfe8; }
+.pill.ok   { background: #d1fae5; color: #065f46; border-color: #a7f3d0; }
+
+.panel {
+  padding: 22px 26px; background: #ffffff;
+  border: 1px solid var(--card-border); border-left: 4px solid var(--a3); border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+}
+.panel.ok { border-left-color: var(--a4); }
+.panel.info { border-left-color: var(--a1); }
+.panel .headline { font-size: 21px; font-weight: 800; line-height: 1.4; color: #0f172a; margin-bottom: 8px; }
+.panel .headline em { font-style: normal; color: var(--a1); background: linear-gradient(120deg, rgba(79, 70, 229, 0.12), transparent); padding: 0 4px; border-radius: 4px; }
+.panel .lines { list-style: none; }
+.panel .lines li { font-size: 13.5px; color: var(--fg-dim); margin-top: 5px; padding-left: 14px; position: relative; }
+.panel .lines li::before {
+  content:""; position:absolute; left:0; top:7px; width:5px; height:5px; border-radius:50%; background: var(--a3);
+}
+.panel .lines b { color: #0f172a; font-weight: 700; }
+
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center; flex: 1; min-height: 0; }
+
+.timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; position: relative; }
+.timeline .phase {
+  padding: 18px 20px; background: #ffffff;
+  border: 1px solid var(--card-border); border-radius: var(--radius); border-top: 3px solid var(--a1);
+  box-shadow: var(--card-shadow);
+}
+.timeline .phase:nth-child(2) { border-top-color: var(--a2); }
+.timeline .phase:nth-child(3) { border-top-color: var(--a4); }
+.timeline .when { font-size: 11.5px; font-weight: 800; letter-spacing: .08em; color: var(--a1); }
+.timeline .phase:nth-child(2) .when { color: var(--a2); }
+.timeline .phase:nth-child(3) .when { color: var(--a4); }
+.timeline h3 { font-size: 15.5px; font-weight: 800; color: #0f172a; margin: 5px 0 7px; }
+.timeline ul { list-style: none; }
+.timeline li { font-size: 12.5px; color: var(--fg-dim); margin-top: 4px; padding-left: 13px; position: relative; }
+.timeline li::before { content:"—"; position:absolute; left:0; color: var(--fg-faint); }
+
+.slide.cover, .slide.closing { align-items: center; justify-content: center; text-align: center; }
+.cover .eyebrow {
+  display: inline-block; padding: 6px 16px; border-radius: 999px;
+  font-size: 12.5px; font-weight: 800; letter-spacing: .15em;
+  background: #e0e7ff; color: #4338ca; border: 1px solid #c7d2fe; margin-bottom: 16px;
+}
+.cover h1 {
+  font-size: 56px; font-weight: 900; letter-spacing: -.03em; line-height: 1.15;
+  background: linear-gradient(120deg, #1e1b4b 0%, #4338ca 45%, #d946ef 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.cover .tagline { margin-top: 14px; font-size: 18px; color: #334155; max-width: 920px; font-weight: 500; }
+.cover .meta {
+  margin-top: 36px; padding: 14px 28px; border: 1px solid #cbd5e1;
+  border-radius: 999px; background: #ffffff; font-size: 14.5px; color: #475569;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+.cover .meta b { color: #0f172a; font-weight: 800; }
+
+.closing .quote { font-size: 38px; font-weight: 900; line-height: 1.4; color: #0f172a; }
+.closing .quote em {
+  font-style: normal; color: var(--a1);
+  background: linear-gradient(120deg, rgba(79, 70, 229, 0.15), transparent);
+  padding: 0 6px; border-radius: 6px;
+}
+.closing .after { margin-top: 20px; font-size: 16.5px; color: #475569; font-weight: 500; }
+.closing .thanks {
+  margin-top: 34px; font-size: 21px; font-weight: 800; color: #312e81;
+  display: inline-block; padding: 8px 24px; background: #e0e7ff; border-radius: 999px;
+}
+
+body.export #stage { top: 0; left: 0; transform: none; }
+body.export #nav, body.export #progress { display: none; }
+
+@media print {
+  @page { size: 1280px 720px; margin: 0; }
+  html, body { overflow: visible; background: #fff; }
+  #stage { position: static; transform: none; width: var(--w); height: auto; }
+  #nav, #progress { display: none; }
+  .slide {
+    position: relative; display: flex !important;
+    width: var(--w); height: var(--h);
+    break-after: page; page-break-after: always;
+  }
+  .slide:last-child { break-after: auto; page-break-after: auto; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div id="stage">
+
+  <!-- SLIDE 1: 표지 -->
+  <section class="slide cover">
+    <div class="eyebrow">✨ 창업지원사업 · 공모전 제출용 발표자료</div>
+    <h1>다시이음 AI (경력번역소)</h1>
+    <div class="tagline">비공식 생활 경험을 Fact-Lock(근거 잠금) 기술로 검증 가능한 직무 역량으로 전환하는 커리어 플랫폼</div>
+    <div class="meta">평가 분야: <b>AI·플랫폼 / 경력 전환 / HR테크</b>　·　<b>다시이음 팀</b></div>
+    <aside class="notes">
+      안녕하십니까. 비공식 생활 경험을 Fact-Lock 기술로 검증 가능한 직무 역량으로 전환하는 근거 기반 AI 커리어 전환 플랫폼, '다시이음 AI' 발표를 시작하겠습니다.
+    </aside>
+  </section>
+
+  <!-- SLIDE 2: Executive Summary -->
+  <section class="slide">
+    <header>
+      <div class="num">EXECUTIVE SUMMARY</div>
+      <h2>사업 요약 <span class="en">Core Summary</span></h2>
+      <div class="sub">140만 경력 공백 구직자의 숨은 경험을 과장 없이 검증하는 AI 커리어 솔루션</div>
+      <hr>
+    </header>
+    <div class="body">
+      <div class="grid cols-4">
+        <div class="card accent-1">
+          <span class="pill">소개</span>
+          <h3>경력 번역 플랫폼</h3>
+          <p>육아·돌봄·가사·봉사 등 공식 증빙 없는 경험을 기업이 탐내는 직무 언어로 자동 변환</p>
+        </div>
+        <div class="card accent-2">
+          <span class="pill ok">핵심 기술</span>
+          <h3>Fact-Lock (근거 잠금)</h3>
+          <p>원문 경험 ↔ 변환 문장 1:1 자동 매핑 및 검증 배지로 AI 환각(거짓 성과) 0% 원천 차단</p>
+        </div>
+        <div class="card accent-3">
+          <span class="pill">결과물</span>
+          <h3>3대 핵심 결과물</h3>
+          <p>TOP 5 직무 역량 도미노 카드 + STAR 면접 답변 전략 + 7일 지원 액션 플랜</p>
+        </div>
+        <div class="card accent-4">
+          <span class="pill ok">북극성 지표</span>
+          <h3>7일 지원 행동 완료</h3>
+          <p>근거가 잠긴 이력서 완성 후 7일 내 실제 채용 지원 완료 구직자 수</p>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">
+      사업 요약입니다. 다시이음 AI는 육아와 돌봄 등 공식 증빙이 없는 경험을 Fact-Lock 기술로 과장 없이 검증된 직무 역량으로 전환하고 7일 내 실제 채용 지원을 이끄는 플랫폼입니다.
+    </aside>
+  </section>
+
+  <!-- SLIDE 3: Problem -->
+  <section class="slide">
+    <header>
+      <div class="num">01. PROBLEM</div>
+      <h2>문제 인식 <span class="en">Problem Statement</span></h2>
+      <div class="sub">대한민국 140만 경력 단절 구직자의 서류 작성 장벽과 기존 대안의 3대 한계</div>
+      <hr>
+    </header>
+    <div class="body">
+      <div class="split">
+        <div class="panel">
+          <span class="pill warn">핵심 페인포인트</span>
+          <div class="headline">"경력란에 적을 내용이 <em>없다</em>고 느낍니다."</div>
+          <ul class="lines">
+            <li><b>숨은 역량 축적</b>: 육아·돌봄·봉사에서 예산관리, 위기대응, 외부협상, 데이터입력 역량 축적</li>
+            <li><b>구조화 장벽</b>: 기업 채용 시장이 이해하는 직무 언어로 변환하는 첫 단계의 극심한 난항</li>
+          </ul>
+        </div>
+        <div class="grid cols-1" style="gap:12px;">
+          <div class="card accent-3">
+            <h3>1. 일반 생성형 AI (ChatGPT 등)</h3>
+            <p>입력되지 않은 수치나 성과를 지어내는 <b>AI 환각(Hallucination)</b>으로 채용관 신뢰 저하</p>
+          </div>
+          <div class="card accent-1">
+            <h3>2. 기존 취업 지원 플랫폼</h3>
+            <p>이미 작성된 이력서 공고 매칭에 집중되어 '경력 부재 구직자'의 경험 발굴 기능 부재</p>
+          </div>
+          <div class="card accent-5">
+            <h3>3. 대면 취업 상담</h3>
+            <p>상담 질은 높으나 인력·시간·지역적 제약으로 대규모 서비스 스케일업 불가능</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">
+      문제점입니다. 경력단절 구직자들은 실제 수많은 관리·협상 역량이 축적되어 있음에도 서류 작성 장벽에 부딪히며, 기존 AI는 환각 문제가, 취업 플랫폼은 이력서 발굴 기능 부재가, 대면 상담은 스케일업의 한계가 존재합니다.
+    </aside>
+  </section>
+
+  <!-- SLIDE 4: Solution -->
+  <section class="slide">
+    <header>
+      <div class="num">02. SOLUTION</div>
+      <h2>다시이음 AI의 3대 핵심 해법 <span class="en">Product Solution</span></h2>
+      <div class="sub">7단계 AI 인터뷰부터 Fact-Lock 검증, 7일 지원 액션 플랜까지의 시스템</div>
+      <hr>
+    </header>
+    <div class="body">
+      <div class="grid cols-3">
+        <div class="card accent-1">
+          <span class="pill">STEP 1</span>
+          <h3>AI 정밀 대화 인터뷰</h3>
+          <p>일괄 작성 대신 <b>7단계 가이디드 대화</b>로 10분 내 경험 수집</p>
+          <ul style="margin-top:8px;">
+            <li>기간 ➔ 상황 ➔ 역할 ➔ 행동</li>
+            <li>도구 ➔ 협업 ➔ 결과 단계별 안내</li>
+          </ul>
+        </div>
+        <div class="card accent-2">
+          <span class="pill ok">STEP 2 (핵심 기술)</span>
+          <h3>Fact-Lock (근거 잠금)</h3>
+          <p>원문 경험 ID 태깅을 통해 <b>거짓 성과 생성을 원천 차단</b></p>
+          <ul style="margin-top:8px;">
+            <li class="check">근거 확인됨(100%) 배지 부여</li>
+            <li class="check">인라인 실시간 문장 수정 가능</li>
+          </ul>
+        </div>
+        <div class="card accent-4">
+          <span class="pill ok">STEP 3</span>
+          <h3>대시보드 & 7일 액션</h3>
+          <p>TOP 5 역량 도미노 카드 및 <b>STAR 면접 답변</b> 즉시 제공</p>
+          <ul style="margin-top:8px;">
+            <li>7일 지원 행동 미션 체크리스트</li>
+            <li>맞춤형 채용 공고 적합도 연동</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">
+      핵심 해법입니다. 7단계 AI 정밀 인터뷰로 경험을 수집하고, Fact-Lock 기술을 활용해 원문 근거 1:1 태깅 및 검증 배지를 부여하며, STAR 면접 답변과 7일 액션 플랜으로 실제 채용 지원을 성공적으로 인도합니다.
+    </aside>
+  </section>
+
+  <!-- SLIDE 5: [실제 웹 입력 데이터] 경험 수집 & Fact-Lock 1:1 매핑 사례 -->
+  <section class="slide">
+    <header>
+      <div class="num">02. SOLUTION - ACTUAL DATA</div>
+      <h2>실제 구직자 경험 ↔ Fact-Lock 변환 사례 <span class="en">Actual User Input Data</span></h2>
+      <div class="sub">김다시 님(8년 공백)이 웹에 직접 입력한 원문 경험과 AI 근거 잠금 변환 문장</div>
+      <hr>
+    </header>
+    <div class="body">
+      <div class="grid cols-3">
+        <div class="card accent-1">
+          <span class="pill">경험 1. 지역 봉사 활동</span>
+          <h3>학부모회 총무 & 바자회</h3>
+          <p style="font-size:12.5px; color:#64748b; margin-bottom:8px;"><b>[원문]</b> 8년간 연 500만원 예산 정산, 소상공인 20곳 찬조 협상, 300명 방문 바자회 성공적 운영</p>
+          <div style="background:#f1f5f9; padding:8px 10px; border-radius:8px; font-size:12.5px; color:#334155;">
+            <span class="pill ok" style="font-size:10px; padding:1px 6px; margin-bottom:3px;">근거 확인됨 (100%)</span><br>
+            <b>[직무 문장]</b> 연 500만 원 규모 예산 집행 및 외부 파트너 20개 사 협상·행사 운영 역량 보유
+          </div>
+        </div>
+
+        <div class="card accent-2">
+          <span class="pill">경험 2. 자영업 보조</span>
+          <h3>가게 경리 & 장부 정산</h3>
+          <p style="font-size:12.5px; color:#64748b; margin-bottom:8px;"><b>[원문]</b> 카센터 간이 장부 정리 및 월 2회 세금계산서 발행, Excel 일자별 매출/지출 정산</p>
+          <div style="background:#f1f5f9; padding:8px 10px; border-radius:8px; font-size:12.5px; color:#334155;">
+            <span class="pill ok" style="font-size:10px; padding:1px 6px; margin-bottom:3px;">근거 확인됨 (100%)</span><br>
+            <b>[직무 문장]</b> Excel 활용 월별 매출·지출 정산 및 세금 관련 기초 자금 데이터 처리 능력
+          </div>
+        </div>
+
+        <div class="card accent-3">
+          <span class="pill">경험 3. 가족 돌봄</span>
+          <h3>부모님 케어 & 복약 관리</h3>
+          <p style="font-size:12.5px; color:#64748b; margin-bottom:8px;"><b>[원문]</b> 부모님 병원 동행 3년 전담, 일자별 복약 지도표 작성하여 질환 수치 수치화 관리</p>
+          <div style="background:#f1f5f9; padding:8px 10px; border-radius:8px; font-size:12.5px; color:#334155;">
+            <span class="pill" style="font-size:10px; padding:1px 6px; margin-bottom:3px;">일부 확인 (검토)</span><br>
+            <b>[직무 문장]</b> 중장년 일정 관리 및 고객 특성에 맞춘 상세 기록·케어 서비스 마인드
+          </div>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">
+      실제 웹 입력 데이터 사례입니다. 구직자가 입력한 3가지 생활 경험(학부모회 예산정산, 가게 세금계산서 발행, 부모님 복약관리)이 Fact-Lock 기술을 거쳐 근거 검증 배지와 함께 정밀한 직무 언어로 1:1 자동 매핑된 결과입니다.
+    </aside>
+  </section>
+
+  <!-- SLIDE 6: [실제 웹 출력 데이터] TOP 5 역량 도미노 카드 -->
+  <section class="slide">
+    <header>
+      <div class="num">02. SOLUTION - COMPETENCY</div>
+      <h2>발견된 TOP 5 직무 역량 도미노 카드 <span class="en">TOP 5 Verified Competencies</span></h2>
+      <div class="sub">구직자의 생활 경험 분석을 통해 웹 대시보드에 즉시 도출된 대표 역량 데이터</div>
+      <hr>
+    </header>
+    <div class="body">
+      <div class="grid cols-5">
+        <div class="card accent-1">
+          <span class="pill">01</span>
+          <h3>예산 & 일정 관리</h3>
+          <p>연 500만원 예산 정산 오차 0% 및 세금계산서 정산 경험</p>
+        </div>
+        <div class="card accent-2">
+          <span class="pill">02</span>
+          <h3>위기 대응 & 소통</h3>
+          <p>우천 비상 대관 이전 및 300명 참가자 100% 전파 안내</p>
+        </div>
+        <div class="card accent-3">
+          <span class="pill">03</span>
+          <h3>외부 협상 & 파트너십</h3>
+          <p>지역 소상공인 20개 사 설득 및 물품 찬조 협약 체결</p>
+        </div>
+        <div class="card accent-4">
+          <span class="pill">04</span>
+          <h3>사무 데이터 처리</h3>
+          <p>Excel 기반 일자별 지출 명세서 및 간이 장부 관리</p>
+        </div>
+        <div class="card accent-5">
+          <span class="pill">05</span>
+          <h3>고객 맞춤형 케어</h3>
+          <p>3년간 일정·복약 데이터 수치화 관리를 통한 높은 꼼꼼함</p>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">
+      역량 도미노 카드 결과입니다. 경험 데이터를 바탕으로 '예산&일정 관리', '위기 대응', '외부 협상', '사무 데이터 처리', '고객 케어' 등 기업 채용관이 즉시 인정할 수 있는 TOP 5 직무 역량 카드가 자동 구성됩니다.
+    </aside>
+  </section>
+
+  <!-- SLIDE 7: [실제 웹 출력 데이터] STAR 면접 답변 & 7일 액션 플랜 -->
+  <section class="slide">
+    <header>
+      <div class="num">02. SOLUTION - INTERVIEW & ACTION</div>
+      <h2>STAR 면접 전략 & 7일 지원 액션 플랜 <span class="en">STAR Interview & 7-Day Action</span></h2>
+      <div class="sub">면접관 압박 질문에 당당히 답하는 STAR 전략과 실제 채용 지원 미션 체크리스트</div>
+      <hr>
+    </header>
+    <div class="body">
+      <div class="split">
+        <div class="panel ok">
+          <span class="pill ok">STAR 면접 답변 실제 데이터</span>
+          <div class="headline" style="font-size:16.5px; margin-bottom:8px;">Q. 공식 직무 공백기 8년 동안 어떤 역량을 쌓았나요?</div>
+          <ul class="lines" style="font-size:12.5px;">
+            <li><b>S (상황)</b>: 8년 간 육아 및 가사 기간 동안 초등학교 학부모회 총무 및 가게 경리를 담당함</li>
+            <li><b>T (과제)</b>: 바자회 예산 수립, 300명 주민 유치, 카센터 간이 장부 정산 전담</li>
+            <li><b>A (행동)</b>: Excel 지출 정산 및 우천 시 3일 전 강당 대관 변경 위기 대응</li>
+            <li><b>R (성과)</b>: 오차율 0% 마감 및 조직의 리스크 방지와 데이터 관리 역량 검증</li>
+          </ul>
+        </div>
+
+        <div class="panel info">
+          <span class="pill info">7일 지원 액션 플랜 체크리스트</span>
+          <ul class="lines" style="font-size:13px;">
+            <li><b>Day 1 (완료)</b>: Fact-Lock 핵심 역량 문장 4개 복사하여 이력서 갱신</li>
+            <li><b>Day 2 (완료)</b>: STAR 면접 답변 질문 3개 음성 연습 완료</li>
+            <li><b>Day 3 (진행)</b>: 사무지원 및 총무 맞춤 채용 공고에 실제 지원서 제출</li>
+            <li><b>Day 4~7</b>: 기초 ERP 강좌 수강신청 및 모의면접 피드백 점검</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">
+      STAR 면접 및 액션 플랜 결과입니다. 공백기 질문에 완벽히 대비하는 S-T-A-R 답변을 즉시 시뮬레이션하고, 단순 이력서 완성을 넘어 7일 내 실제 채용 공고 지원까지 이끄는 액션 플랜을 제공합니다.
+    </aside>
+  </section>
+
+  <!-- SLIDE 8: Go-To-Market -->
+  <section class="slide">
+    <header>
+      <div class="num">03. SCALE-UP 1</div>
+      <h2>시장 진입 및 확장 전략 <span class="en">Go-To-Market</span></h2>
+      <div class="sub">초기 파일럿 검증 ➔ 수도권/대도시 확장 ➔ 글로벌 웹 서비스 전개</div>
+      <hr>
+    </header>
+    <div class="body">
+      <div class="timeline">
+        <div class="phase">
+          <div class="when">1단계 (초기 검증)</div>
+          <h3>지역 새일센터 파일럿</h3>
+          <ul>
+            <li>여성새로일하기센터 협력 연계</li>
+            <li>지역 평생교육기관 파일럿 운영</li>
+            <li>초기 PMF 및 고객 후기 확보</li>
+          </ul>
+        </div>
+        <div class="phase">
+          <div class="when">2단계 (전국 확장)</div>
+          <h3>거점 도시 & HR 연계</h3>
+          <ul>
+            <li>대도시 중심 서비스/관광/돌봄 확대</li>
+            <li>HR테크, 대기업 ESG 파트너십</li>
+            <li>취업 인플루언서 성과형 캠페인</li>
+          </ul>
+        </div>
+        <div class="phase">
+          <div class="when">3단계 (글로벌 전개)</div>
+          <h3>글로벌 웹 서비스</h3>
+          <ul>
+            <li>단일 웹 코어 + 다국어 UI 적용</li>
+            <li>국가별 직무 용어팩 라이브러리</li>
+            <li>오프라인 거점 없는 웹 확장</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">
+      시장 진입 전략입니다. 1단계로 지자체 새일센터와 파일럿을 진행하여 초기 PMF를 검증하고, 2단계 대도시 및 HR테크 연계 확장, 3단계 글로벌 다국어 웹 서비스로 성장시켜 나갑니다.
+    </aside>
+  </section>
+
+  <!-- SLIDE 9: BM & Roadmap -->
+  <section class="slide">
+    <header>
+      <div class="num">03. SCALE-UP 2</div>
+      <h2>수익 모델 & 로드맵 <span class="en">Business Model & Roadmap</span></h2>
+      <div class="sub">개인 사용자 무상 제공 원칙 + 다각화된 B2G / B2B2C 기관 수익 구조</div>
+      <hr>
+    </header>
+    <div class="body">
+      <div class="grid cols-3" style="margin-bottom:14px;">
+        <div class="card accent-1">
+          <span class="pill">수익원 1</span>
+          <h3>B2G / B2B2C 기관 계약</h3>
+          <p>지자체, 새일센터, 대학 대상 사용자 진척도 & 익명 성과 리포트 라이선스 공급</p>
+        </div>
+        <div class="card accent-2">
+          <span class="pill">수익원 2</span>
+          <h3>맥락형 광고 네트워크</h3>
+          <p>결과 대시보드 하단에 연관 교육·자격증 서비스 광고 보조 노출</p>
+        </div>
+        <div class="card accent-3">
+          <span class="pill">수익원 3</span>
+          <h3>인플루언서 성과형 캠페인</h3>
+          <p>취업·경력 복귀 크리에이터 제휴 및 지원 전환 수수료 모델</p>
+        </div>
+      </div>
+      <div class="split">
+        <div class="panel ok">
+          <span class="pill ok">성장 시나리오 A</span>
+          <div class="headline" style="font-size:17.5px;">3년 차 MAU 15만 / 매출 30억 ➔ 5년 차 글로벌 다국어 웹 공개</div>
+        </div>
+        <div class="panel info">
+          <span class="pill warn">생존 시나리오 B</span>
+          <div class="headline" style="font-size:17.5px;">3년 차 성과 미달 시 90일 내 기관용 B2B SaaS 자동화 도구 피벗</div>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">
+      수익 모델과 로드맵입니다. 개인 사용자는 무상 제공하며 기관 라이선스 및 성과형 캠페인으로 수익을 창출하고, 리스크 관리를 위한 B2B SaaS 피벗 시나리오 B도 완비되어 있습니다.
+    </aside>
+  </section>
+
+  <!-- SLIDE 10: Governance & ESG -->
+  <section class="slide">
+    <header>
+      <div class="num">04. GOVERNANCE & ESG</div>
+      <h2>AI 윤리 거버넌스 & ESG <span class="en">AI Ethics & ESG Impact</span></h2>
+      <div class="sub">개인정보 원스톱 보호 및 상담 기관 생산성 300% 향상의 사회적 가치</div>
+      <hr>
+    </header>
+    <div class="body">
+      <div class="grid cols-2">
+        <div class="card accent-1">
+          <span class="pill">보안 & AI 윤리</span>
+          <h3>책임감 있는 AI 거버넌스</h3>
+          <ul>
+            <li><b>최소 정보 수집 및 암호화</b>: 앱 내에서 개인정보 처리 및 데이터 삭제 원스톱 제공</li>
+            <li><b>운영자 최소 권한 설계</b>: 운영자도 구직자의 개인 원문 경험 무단 열람 불가 (권한 격리)</li>
+            <li><b>Fact-Lock 검증</b>: 환각 방지 배지로 허위 서류 작성 리스크 차단</li>
+          </ul>
+        </div>
+        <div class="card accent-4">
+          <span class="pill ok">ESG 소셜 임팩트</span>
+          <h3>사회적 가치 창출</h3>
+          <ul>
+            <li><b>자존감 회복</b>: 비공식 경험의 가치 재조명을 통한 경제활동 참여 유도</li>
+            <li><b>상담 생산성 300% 향상</b>: 새일센터 등 공공 상담사의 서류 진단 생산성 비약적 향상</li>
+            <li><b>경력 재진입 포용</b>: 경력단절 구직자의 서류 장벽 해소에 기여</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">
+      ESG 및 거버넌스입니다. 개인 원문 데이터 무단 열람을 차단하는 보안 체계를 구축하였으며, 공공 취업 상담 기관의 서류 진단 생산성을 300% 이상 향상시키는 사회적 가치를 창출합니다.
+    </aside>
+  </section>
+
+  <!-- SLIDE 11: Closing -->
+  <section class="slide closing">
+    <div class="quote">
+      "경력의 공백을 <em>역량의 공백</em>으로 만들지 않습니다."
+    </div>
+    <div class="after">
+      Fact-Lock 기반 AI 기술로 비공식 경험을 검증 가능한 직무 역량으로 전환합니다.
+    </div>
+    <div class="thanks">
+      감사합니다 · 다시이음 AI 팀
+    </div>
+    <aside class="notes">
+      경력의 공백을 역량의 공백으로 만들지 않는 근거 기반 AI 커리어 전환 플랫폼 다시이음 AI였습니다. 경청해 주셔서 감사합니다.
+    </aside>
+  </section>
+
+</div>
+
+<div id="nav">
+  <button id="prev" aria-label="이전 슬라이드">◀</button>
+  <span id="counter">1 / 11</span>
+  <button id="next" aria-label="다음 슬라이드">▶</button>
+</div>
+
+<script>
+(function () {
+  const slides = [...document.querySelectorAll('.slide')];
+  const params = new URLSearchParams(location.search);
+  const exportMode = params.has('export');
+  let cur = 0;
+
+  function show(i) {
+    cur = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, n) => s.classList.toggle('active', n === cur));
+    document.getElementById('counter').textContent = (cur + 1) + ' / ' + slides.length;
+    document.getElementById('progress').style.width = ((cur + 1) / slides.length * 100) + '%';
+  }
+
+  function fit() {
+    if (exportMode) return;
+    document.documentElement.style.setProperty('--fit', Math.min(innerWidth / 1280, innerHeight / 720));
+  }
+
+  addEventListener('resize', fit);
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { show(cur + 1); e.preventDefault(); }
+    if (['ArrowLeft', 'PageUp'].includes(e.key))         { show(cur - 1); e.preventDefault(); }
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End')  show(slides.length - 1);
+  });
+  document.getElementById('prev').onclick = () => show(cur - 1);
+  document.getElementById('next').onclick = () => show(cur + 1);
+
+  if (exportMode) document.body.classList.add('export');
+  fit();
+  show(parseInt(params.get('slide') || '1', 10) - 1);
+
+  window.__count = slides.length;
+  window.__goto  = show;
+  window.__notes = i => (slides[i].querySelector('.notes')?.textContent || '').trim();
+})();
+</script>
+</body>
+</html>
