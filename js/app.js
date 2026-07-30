@@ -9,7 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
     persona: JSON.parse(JSON.stringify(DEMO_PERSONA)),
     chatHistory: [],
     interviewStepIndex: 0,
-    theme: localStorage.getItem("theme") || "dark"
+    theme: localStorage.getItem("theme") || "dark",
+    selectedJobTitle: "사무 지원 & 행정",
+    selectedRegion: "전주 / 광주"
   };
 
   // DOM Elements
@@ -114,20 +116,28 @@ document.addEventListener("DOMContentLoaded", () => {
      Screen 2: Goal Setup
   ---------------------------------------------------- */
   function renderGoalSetup() {
-    const jobCards = document.querySelectorAll(".job-select-card");
+    const selectors = document.querySelectorAll(".grid-selector");
+    if(selectors.length < 2) return;
+
+    const jobCards = selectors[0].querySelectorAll(".select-card");
     jobCards.forEach(card => {
-      card.addEventListener("click", () => {
+      // Remove old listener if any (simplest way is replacing node, but attaching is fine for demo)
+      card.onclick = () => {
         jobCards.forEach(c => c.classList.remove("selected"));
         card.classList.add("selected");
-      });
+        const titleEl = card.querySelector(".s-title");
+        if(titleEl) state.selectedJobTitle = titleEl.innerText;
+      };
     });
 
-    const regionCards = document.querySelectorAll(".region-select-card");
+    const regionCards = selectors[1].querySelectorAll(".select-card");
     regionCards.forEach(card => {
-      card.addEventListener("click", () => {
+      card.onclick = () => {
         regionCards.forEach(c => c.classList.remove("selected"));
         card.classList.add("selected");
-      });
+        const titleEl = card.querySelector(".s-title");
+        if(titleEl) state.selectedRegion = titleEl.innerText;
+      };
     });
   }
 
@@ -314,6 +324,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("jobMatchContainer");
     if (!container) return;
 
+    // 2단계에서 선택한 내용을 첫 번째 공고에 동적으로 반영
+    if (state.persona.jobs.length > 0) {
+      state.persona.jobs[0].location = state.selectedRegion;
+      state.persona.jobs[0].title = state.selectedJobTitle + " 파트너 모집";
+      state.persona.jobs[0].company = state.selectedRegion + " 지역 선도 기업";
+    }
+
     container.innerHTML = "";
     state.persona.jobs.forEach(job => {
       const card = document.createElement("div");
@@ -353,6 +370,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const progressText = document.getElementById("actionProgressText");
 
     if (!container) return;
+
+    // 2단계 내용을 액션 플랜 3번째 미션에 동적으로 반영
+    if (state.persona.actionPlan.length >= 3) {
+      state.persona.actionPlan[2].task = `[목표 지역: ${state.selectedRegion}] ${state.selectedJobTitle} 관련 맞춤 공고에 첫 지원하기`;
+    }
 
     container.innerHTML = "";
     let doneCount = 0;
