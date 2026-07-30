@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>다시이음 AI - 프리미엄 발표 스크립트</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-grad-start: #0f172a;
+            --bg-grad-end: #020617;
+            --accent-grad: linear-gradient(135deg, #3b82f6, #8b5cf6, #d946ef);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-accent: #e2e8f0;
+            --radius: 16px;
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: linear-gradient(135deg, var(--bg-grad-start), var(--bg-grad-end));
+            background-attachment: fixed;
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Animated background elements */
+        .bg-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.4;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+        .bg-orb-1 {
+            width: 400px; height: 400px;
+            background: #3b82f6;
+            top: -100px; left: -100px;
+        }
+        .bg-orb-2 {
+            width: 500px; height: 500px;
+            background: #8b5cf6;
+            bottom: -150px; right: -150px;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.2); }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 80px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .badge-premium {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: var(--accent-grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .overview-item {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .overview-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .overview-icon { font-size: 1.5rem; }
+        .overview-text { font-size: 0.9rem; font-weight: 600; color: var(--text-accent); }
+
+        /* Section Title */
+        .section-header {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 80px 0 40px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .section-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--glass-border), transparent);
+        }
+
+        /* Glass Cards */
+        .card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 32px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(16px);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: var(--accent-grad);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        .card:hover::before { opacity: 1; }
+
+        .card-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .slide-number {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #8b5cf6;
+            font-weight: 800;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .time-pill {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .time-pill::before {
+            content: '';
+            display: inline-block;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+
+        .card-content {
+            font-size: 1.1rem;
+            color: var(--text-accent);
+            line-height: 1.8;
+            font-weight: 300;
+            position: relative;
+        }
+        
+        .card-content strong {
+            color: #fff;
+            font-weight: 600;
+            background: rgba(139, 92, 246, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* QnA Specifics */
+        .qna-card { border-top: 1px solid var(--glass-border); }
+        .q-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+        .q-text span {
+            color: #d946ef;
+            font-weight: 800;
+            margin-right: 12px;
+        }
+        .a-text {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            padding-left: 28px;
+            border-left: 2px solid rgba(255,255,255,0.1);
+        }
+        .tip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .card-header-flex { flex-direction: column; gap: 16px; }
+            .time-pill { align-self: flex-start; }
+            .card { padding: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+
+    <div class="container">
+        <header>
+            <div class="badge-premium">Contest Script Guide</div>
+            <h1>다시이음 AI</h1>
+            <p class="subtitle">비공식 생활 경험을 직무 역량으로 전환하는 근거 기반 AI 플랫폼 발표 스크립트</p>
+            
+            <div class="overview-grid">
+                <div class="overview-item">
+                    <span class="overview-icon">⏱️</span>
+                    <span class="overview-text">발표 5분 30초</span>
+                </div>
+                <div class="overview-item">
+                    <span class="overview-icon">🎯</span>
+                    <span class="overview-text">경력 단절 구직자 타겟</span>
+                </div>
+                <div class="overview-item">
+                    <span class="overview-icon">💡</span>
+                    <span class="overview-text">당당함 & 전문성 톤</span>
+                </div>
+            </div>
+        </header>
+
+        <h2 class="section-header">프레젠테이션 스크립트</h2>
+
+        <!-- Slide 1 -->
+        <div class="card js-scroll">
+            <div class="card-header-flex">
+                <div>
+                    <span class="slide-number">Slide 01</span>
+                    <h3 class="card-title">표지: 다시이음 AI</h3>
+                </div>
+                <div class="time-pill">00:00 ~ 00:25 (25초)</div>
+            </div>
+            <div class="card-content">
+                안녕하십니까. 140만 경력 단절 구직자의 비공식 생활 경험을 <strong>Fact-Lock(근거 잠금) 기술</strong>로 검증 가능한 직무 역량으로 전환하는 근거 기반 AI 커리어 플랫폼, 다시이음 AI 발표를 맡은 다시이음 팀입니다.<br><br>
+                경력의 공백으로 서류 작성에서부터 좌절을 겪는 많은 구직자들에게 실질적인 커리어 리부트 기회를 제공하는 저희의 솔루션을 지금부터 소개합니다.
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="card js-scroll">
+            <div class="card-header-flex">
+                <div>
+                    <span class="slide-number">Slide 02</span>
+                    <h3 class="card-title">사업 요약 (Core Summary)</h3>
+                </div>
+                <div class="time-pill">00:25 ~ 00:50 (25초)</div>
+            </div>
+            <div class="card-content">
+                저희 다시이음 AI의 핵심 요약입니다.<br>
+                육아, 돌봄, 봉사 등 공식 증빙이 없어 이력서에 적지 못했던 생활 경험을 기업이 탐내는 정밀한 직무 언어로 자동 변환합니다.<br><br>
+                핵심은 <strong>'Fact-Lock'</strong> 기술입니다. 원문 경험과 변환된 직무 문장을 1:1로 매핑하여 AI 환각을 원천 차단합니다. 이를 통해 역량 도미노 카드, STAR 면접 답변, 그리고 7일 액션 플랜이라는 3대 결과물을 제공하며, 구직자가 7일 내 실제 채용 지원을 완료하도록 돕는 것을 북극성 지표로 삼고 있습니다.
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="card js-scroll">
+            <div class="card-header-flex">
+                <div>
+                    <span class="slide-number">Slide 03</span>
+                    <h3 class="card-title">문제 인식 (Problem Statement)</h3>
+                </div>
+                <div class="time-pill">00:50 ~ 01:20 (30초)</div>
+            </div>
+            <div class="card-content">
+                대한민국 140만 경력 단절 구직자의 가장 큰 고충은 바로 <strong>'경력란에 적을 내용이 없다'</strong>는 극심한 막막함입니다. 실제로는 육아와 봉사 과정에서 예산 관리, 위기 대응, 협상 능력이 충분히 축적되어 있지만 이를 직무 언어로 구조화하는 장벽이 매우 높습니다.<br><br>
+                기존 대안들도 명확한 한계가 있었습니다. 일반 생성형 AI는 성과를 지어내는 <strong>환각(Hallucination) 리스크</strong>가 있어 기업 채용관의 신뢰를 잃기 쉽고, 기존 취업 플랫폼은 경력 부재자의 경험을 발굴하지 못하며, 대면 상담은 인력과 시간의 제약으로 스케일업이 불가능했습니다.
+            </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="card js-scroll">
+            <div class="card-header-flex">
+                <div>
+                    <span class="slide-number">Slide 04</span>
+                    <h3 class="card-title">솔루션 - 3대 핵심 해법</h3>
+                </div>
+                <div class="time-pill">01:20 ~ 01:50 (30초)</div>
+            </div>
+            <div class="card-content">
+                다시이음 AI는 이 문제를 3단계 정밀 프로세스로 해결합니다.<br><br>
+                <strong>STEP 1</strong>, 7단계 대화형 AI 인터뷰를 통해 10분 만에 상황, 역할, 행동, 결과 데이터를 자연스럽게 수집합니다.<br>
+                <strong>STEP 2</strong>, 자체 개발한 <strong>Fact-Lock 기술</strong>로 입력된 원문 근거에 100% 검증 배지를 부여해 허위 성과 작성을 완전 차단합니다.<br>
+                <strong>STEP 3</strong>, 분석된 데이터를 바탕으로 TOP 5 직무 역량 카드, 면접관 질문에 당당히 대응하는 STAR 답변, 그리고 7일 지원 체크리스트를 즉시 생성합니다.
+            </div>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="card js-scroll">
+            <div class="card-header-flex">
+                <div>
+                    <span class="slide-number">Slide 05</span>
+                    <h3 class="card-title">실제 데이터 사례</h3>
+                </div>
+                <div class="time-pill">01:50 ~ 02:25 (35초)</div>
+            </div>
+            <div class="card-content">
+                실제 8년의 경력 공백을 가진 구직자 '김다시' 님의 실제 서비스 적용 사례입니다.<br><br>
+                화면을 보시면 학부모회 바자회 운영 경험 중 <strong>'8년간 연 500만 원 예산 정산'</strong>이라는 원문 데이터가, Fact-Lock 검증 배지와 함께 <strong>'연 500만 원 규모 예산 집행 및 외부 파트너 20개 사 협상·행사 운영 역량'</strong>이라는 정밀한 총무·사무 직무 언어로 1:1 자동 전환된 것을 확인할 수 있습니다.<br>
+                이처럼 과장이나 거짓 없이 근거에 기반한 진짜 직무 역량을 도출해 냅니다.
+            </div>
+        </div>
+
+        <!-- Slide 6 -->
+        <div class="card js-scroll">
+            <div class="card-header-flex">
+                <div>
+                    <span class="slide-number">Slide 06</span>
+                    <h3 class="card-title">TOP 5 직무 역량 카드</h3>
+                </div>
+                <div class="time-pill">02:25 ~ 02:55 (30초)</div>
+            </div>
+            <div class="card-content">
+                이렇게 분석된 경험은 구직자 웹 대시보드에 <strong>TOP 5 직무 역량 도미노 카드</strong>로 즉시 도출됩니다.<br><br>
+                예산 & 일정 관리, 우천 시 비상 대관을 이끌어낸 위기 대응, 소상공인 20곳을 설득한 외부 협상력, 엑셀 장부 작성의 사무 데이터 처리, 그리고 복약 관리를 통해 증명된 꼼꼼한 고객 케어 역량까지, 기업 채용관이 즉시 납득할 수 있는 역량 포트폴리오로 재탄생합니다.
+            </div>
+        </div>
+
+        <!-- Slide 7 -->
+        <div class="card js-scroll">
+            <div class="card-header-flex">
+                <div>
+                    <span class="slide-number">Slide 07</span>
+                    <h3 class="card-title">STAR 면접 & 7일 액션 플랜</h3>
+                </div>
+                <div class="time-pill">02:55 ~ 03:30 (35초)</div>
+            </div>
+            <div class="card-content">
+                이력서 완성에서 멈추지 않습니다. 구직자가 가장 두려워하는 <strong>'8년 공백기 동안 무엇을 했는가?'</strong>라는 면접관의 압박 질문에 당당히 답할 수 있도록 <strong>Situation - Task - Action - Result</strong> 구조의 STAR 면접 답변 시뮬레이션을 제공합니다.<br><br>
+                나아가 Day 1 이력서 갱신부터 Day 3 실제 채용 공고 지원서 제출까지 이어지는 <strong>7일 액션 플랜 체크리스트</strong>를 제공하여 구직자를 실제 행동으로 이끕니다.
+            </div>
+        </div>
+
+        <!-- Slide 8 -->
+        <div class="card js-scroll">
+            <div class="card-header-flex">
+                <div>
+                    <span class="slide-number">Slide 08</span>
+                    <h3 class="card-title">시장 진입 전략 (Go-To-Market)</h3>
+                </div>
+                <div class="time-pill">03:30 ~ 04:00 (30초)</div>
+            </div>
+            <div class="card-content">
+                시장 진입 전략입니다.<br>
+                1단계로 지자체 여성새로일하기센터 및 지역 평생교육기관과 협력하여 파일럿을 운영하고 초기 사용자를 확보합니다.<br>
+                2단계로 수도권 및 대도시 중심의 서비스·돌봄·경리 분야 HR테크 기업과 파트너십을 맺고 시장을 확장하며,<br>
+                3단계로 단일 웹 코어 엔진에 다국어 UI와 국가별 직무 용어팩을 적용해 글로벌 웹 서비스로 성장시켜 나갈 것입니다.
+            </div>
+        </div>
+
+        <!-- Slide 9 -->
+        <div class="card js-scroll">
+            <div class="card-header-flex">
+                <div>
+                    <span class="slide-number">Slide 09</span>
+                    <h3 class="card-title">수익 모델 & 로드맵</h3>
+                </div>
+                <div class="time-pill">04:00 ~ 04:30 (30초)</div>
+            </div>
+            <div class="card-content">
+                수익 모델입니다. 구직자 개인에게는 100% 무상 제공을 원칙으로 하여 장벽을 낮춥니다.<br>
+                대신 새일센터, 지자체, 대학 등 공공기관에 구직자 진척도 분석 리포트 라이선스를 공급하는 B2G/B2B2C 모델과 연관 직무 교육 광고 네트워크로 수익을 창출합니다.<br><br>
+                3년 차 MAU 15만 명, 매출 30억 달성을 목표로 하며, 시장 변동 시 90일 내 기관용 B2B SaaS 자동화 도구로 피벗 가능한 리스크 관리 시나리오 B도 완비되어 있습니다.
+            </div>
+        </div>
+
+        <!-- Slide 10 -->
+        <div class="card js-scroll">
+            <div class="card-header-flex">
+                <div>
+                    <span class="slide-number">Slide 10</span>
+                    <h3 class="card-title">AI 윤리 거버넌스 & ESG</h3>
+                </div>
+                <div class="time-pill">04:30 ~ 05:00 (30초)</div>
+            </div>
+            <div class="card-content">
+                저희 서비스는 책임감 있는 AI 거버넌스와 ESG 가치를 최우선으로 합니다.<br>
+                개인 원문 데이터에 대해 운영자 최소 권한 격리 및 원스톱 파기 시스템을 적용하여 보안을 철저히 유지하며, Fact-Lock 기술로 허위 서류 리스크를 차단합니다.<br><br>
+                무엇보다 경력단절 구직자의 자존감을 회복시키고, 공공 취업 상담사의 서류 진단 생산성을 <strong>300% 이상 향상</strong>시키는 지속 가능한 사회적 가치를 창출합니다.
+            </div>
+        </div>
+
+        <!-- Slide 11 -->
+        <div class="card js-scroll">
+            <div class="card-header-flex">
+                <div>
+                    <span class="slide-number">Slide 11</span>
+                    <h3 class="card-title">클로징 (Closing)</h3>
+                </div>
+                <div class="time-pill">05:00 ~ 05:20 (20초)</div>
+            </div>
+            <div class="card-content">
+                <strong>'경력의 공백을 역량의 공백으로 만들지 않는다.'</strong><br><br>
+                다시이음 AI는 Fact-Lock 기반 AI 기술로 수 multi 구직자들의 숨은 경험을 검증된 직무 역량으로 전환하여 사회로의 당당한 복귀를 돕겠습니다.<br><br>
+                경청해 주셔서 감사합니다!
+            </div>
+        </div>
+
+        <h2 class="section-header">심사위원 예상 Q&A</h2>
+
+        <div class="card qna-card js-scroll">
+            <div class="q-text"><span>Q1.</span> 일반 ChatGPT에 프롬프트를 넣는 것과 어떤 차이가 있나요?</div>
+            <div class="tip">💡 핵심: 환각 차단 & 경험 미보유자 특화 인터뷰</div>
+            <div class="a-text">
+                일반 LLM은 존재하지 않는 성과를 지어내는 'AI 환각' 현상이 빈번합니다. 저희는 <strong>Fact-Lock(근거 잠금) 기술</strong>을 통해 원문 경험과 변환 문장을 1:1로 결합하여 환각을 100% 원천 차단합니다. 또한 경험 정리가 서툰 구직자를 위해 7단계 맞춤형 인터뷰 가이드를 제공합니다.
+            </div>
+        </div>
+
+        <div class="card qna-card js-scroll">
+            <div class="q-text"><span>Q2.</span> Fact-Lock 기술이 어떻게 환각을 원천 차단합니까?</div>
+            <div class="tip">💡 핵심: 구조화 태깅 및 시스템 검증 레이어</div>
+            <div class="a-text">
+                AI가 문장을 생성할 때, 사용자가 직접 입력한 원문 텍스트의 키워드 세그먼트(예: 연 500만원)를 메타데이터 칩으로 태깅합니다. 생성된 문장이 원문 태그 범위를 벗어나 새로운 수치를 추가하려고 하면 시스템 레이어에서 이를 즉시 차단하거나 '검토 필요' 경고를 발생시킵니다.
+            </div>
+        </div>
+
+        <div class="card qna-card js-scroll">
+            <div class="q-text"><span>Q3.</span> 개인에게 무료로 제공하면 수익성은 어떻게 확보하나요?</div>
+            <div class="tip">💡 핵심: 공공기관용 B2G SaaS 라이선스 판매</div>
+            <div class="a-text">
+                새일센터, 지자체 취업지원센터 등 공공기관은 구직자 서류 작성 지원에 막대한 예산을 씁니다. 저희는 개인에게는 무료로 제공해 유저를 확보하고, 공공·상담 기관에는 <strong>'상담 생산성 향상 관리 대시보드 라이선스(B2G SaaS)'</strong>를 판매하여 안정적인 수익을 창출합니다.
+            </div>
+        </div>
+
+        <div class="card qna-card js-scroll">
+            <div class="q-text"><span>Q4.</span> 8년 공백의 구직자가 실제로 7일 안에 채용 지원이 가능할까요?</div>
+            <div class="tip">💡 핵심: 북극성 지표와 마이크로 미션 시스템</div>
+            <div class="a-text">
+                구직 포기의 주원인은 '불확실성'입니다. 다시이음 AI는 직무 역량 도출 직후 공고 적합도를 매칭해주고, Day 1 복사하기, Day 2 면접 연습하기, Day 3 실제 클릭하기 등 매일 수행할 명확한 소규모 액션 미션을 제시함으로써 실제 지원 완료율을 극대화합니다.
+            </div>
+        </div>
+
+        <div class="card qna-card js-scroll">
+            <div class="q-text"><span>Q5.</span> 민감한 개인 생활 데이터 보안은 어떻게 처리되나요?</div>
+            <div class="tip">💡 핵심: 권한 격리 및 1-Click 파기 시스템</div>
+            <div class="a-text">
+                가입 시 최소 정보만 수집하며, 모든 경험 데이터는 암호화됩니다. 운영자라 하더라도 구직자의 원문 데이터를 무단 조회할 수 없도록 철저한 '권한 격리'가 적용되어 있으며, 사용자가 대시보드에서 1-Click으로 즉각 파기할 수 있는 시스템을 제공합니다.
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Intersection Observer for scroll animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            document.querySelectorAll('.js-scroll').forEach((el) => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
